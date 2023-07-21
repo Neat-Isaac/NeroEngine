@@ -87,6 +87,7 @@ void nero::Camera::Init()
 		}
 		printf("\n");
 	}
+	maplines=size.y;
 }
 void nero::Camera::SetPos(Pos p)
 {
@@ -117,4 +118,65 @@ void nero::Camera::Refresh()
 	}
 	//当然，如果你想的话，再运行一次Init函数也能达到该函数同样的效果
 	//就是屏幕有些过于“闪耀”了
+}
+
+//Body
+nero::Body::Body() {}
+nero::Body::Body(Pos p)
+{
+	seat=p;
+}
+void nero::Body::SetPos(Pos p)
+{
+	seat=p;
+}
+void nero::Body::SetPos(int xx,int yy)
+{
+	seat.x=xx;
+	seat.y=yy;
+}
+void nero::Body::Move(Pos p)
+{
+	seat=seat+p;
+}
+nero::Pos nero::Body::GetPos()
+{
+	return seat;
+}
+void nero::Body::Erase()
+{
+	//To be continued...
+}
+
+//Menu
+nero::Menu::Menu()
+{
+	cnt=0;
+}
+void nero::Menu::AddItem(char str[],int length,int &var)
+{
+	for(int i=0;i<length;i++)
+		strs[cnt][i]=str[i];
+	vars[cnt]=&var;
+	lens[cnt]=length;
+	cnt++;
+}
+void nero::Menu::Show()
+{
+	MoveCur(0,maplines);
+	for(int i=0;i<=cnt/4;i++)
+	{
+		for(int j=0;j<MAX_MENU_STR*8;j++)
+			printf(" ");
+		printf("\n");
+	}
+	MoveCur(0,maplines);
+	for(int i=0;i<cnt;i++)
+	{
+		for(int j=0;j<lens[i];j++)
+			printf("%c",strs[i][j]);
+		printf(":%d\t",*vars[i]);
+		if(!((i+1)%4))
+			printf("\n");
+	}
 }
